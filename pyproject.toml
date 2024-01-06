@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "newsed"
+version = "0.1.0"
+description = "A package to fetch and display news articles."
+authors = ["avycado13 <108358183+avycado13@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.25.1"
+beautifulsoup4 = "^4.9.3"
+blessed = "^1.17.12"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+newsed = 'newsed.app:main'
+
