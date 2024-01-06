@@ -28,30 +28,35 @@ def whitespace_only(term, line):
     return line[:term.length(line) - term.length(line.lstrip())]
 
 
-def find_articles(soup):
+def find_articles(soup, url):
+    if 'text.npr.org' in url:
+        return (a_link for section in soup.find_all('div', class_='topic-container') for a_link in section.find_all('a'))
     return (a_link for section in soup.find_all('section') for a_link in section.find_all('a'))
 
 
 def main():
     term = Terminal()
     print(f"Current date and time: {datetime.now()}\n")
-    urls = ['https://lite.cnn.com', 'https://legiblenews.com']
+    urls = ['https://lite.cnn.com',
+            'https://legiblenews.com', 'https://text.npr.org']
     for url in urls:
         print(f"Articles from {url}:")
-        soup = BeautifulSoup(requests.get(url, timeout=10).content, 'html.parser')
+        soup = BeautifulSoup(requests.get(
+            url, timeout=10).content, 'html.parser')
         textwrap_kwargs = {
             'width': term.width - (term.width // 4),
             'initial_indent': ' ' * (term.width // 6) + '* ',
             'subsequent_indent': (' ' * (term.width // 6)) + ' ' * 2,
         }
-        for a_href in find_articles(soup):
+        for a_href in find_articles(soup, url):
             url_id = random.randrange(0, 1 << 24)
             for line in term.wrap(make_bold(term, a_href.text), **textwrap_kwargs):
                 print(whitespace_only(term, line), end='')
                 print(term.link(url + a_href.get('href'), line.lstrip(), url_id))
 
     print("\nWeather from wttr.in:")
-    weather_response = requests.get('http://wttr.in/?format=%C+%t+%w', timeout=10)
+    weather_response = requests.get(
+        'http://wttr.in/?format=%C+%t+%w', timeout=10)
     print(weather_response.text)
 
 
