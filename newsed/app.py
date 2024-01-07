@@ -40,7 +40,7 @@ def main():
     urls = ['https://lite.cnn.com',
             'https://legiblenews.com', 'https://text.npr.org']
     for url in urls:
-        print(f"Articles from {url}:")
+        print(f"Articles from {term.link(url,url)}:")
         soup = BeautifulSoup(requests.get(
             url, timeout=10).content, 'html.parser')
         textwrap_kwargs = {
@@ -54,7 +54,7 @@ def main():
                 print(whitespace_only(term, line), end='')
                 print(term.link(url + a_href.get('href'), line.lstrip(), url_id))
 
-    print("\nWeather from wttr.in:")
+    print(f"\nWeather from {term.link('https://wttr.in','wttr.in')}:")
     weather_response = requests.get(
         'http://wttr.in/?format=%C+%t+%w', timeout=10)
     print(weather_response.text)
