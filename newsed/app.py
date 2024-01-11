@@ -1,6 +1,7 @@
 # std imports
 import random
 from datetime import datetime
+import argparse
 
 # 3rd party
 import requests
@@ -10,6 +11,13 @@ import requests
 from bs4 import BeautifulSoup
 # local imports
 from blessed import Terminal
+
+
+parser = argparse.ArgumentParser(
+    description='Print articles from various sources.')
+parser.add_argument('-a', type=int, default=5,
+                    help='Number of articles to print from each source.')
+args = parser.parse_args()
 
 
 def embolden(phrase):
@@ -48,11 +56,15 @@ def main():
             'initial_indent': ' ' * (term.width // 6) + '* ',
             'subsequent_indent': (' ' * (term.width // 6)) + ' ' * 2,
         }
+        article_count = 0
         for a_href in find_articles(soup, url):
+            if article_count >= args.a:
+                break
             url_id = random.randrange(0, 1 << 24)
             for line in term.wrap(make_bold(term, a_href.text), **textwrap_kwargs):
                 print(whitespace_only(term, line), end='')
                 print(term.link(url + a_href.get('href'), line.lstrip(), url_id))
+            article_count += 1
 
     print(f"\nWeather from {term.link('https://wttr.in','wttr.in')}:")
     weather_response = requests.get(
