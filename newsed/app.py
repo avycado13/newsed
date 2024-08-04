@@ -91,7 +91,7 @@ def main():
             url_id = random.randrange(0, 1 << 24)
             for line in term.wrap(make_bold(term, a_href.text), **textwrap_kwargs):
                 print(whitespace_only(term, line), end="")
-                print(term.link(url + a_href.get("href"), line.lstrip(), url_id))
+                print(term.link(a_href.get("href"), line.lstrip(), url_id))
             article_count += 1
 
     print(f"\nWeather from {term.link('https://wttr.in', 'wttr.in')}:")
