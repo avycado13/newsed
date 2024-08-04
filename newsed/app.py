@@ -45,8 +45,8 @@ def whitespace_only(term, line):
 
 
 def find_articles(soup, url):
-    if user_script and url in user_script.url_parsing_dict:
-        return user_script.url_parsing_dict[url](soup, url)
+    if user_script and url in user_script.urls:
+        return user_script.urls[url](soup, url)
     elif "text.npr.org" in url:
         return (
             a_link
@@ -68,7 +68,7 @@ def main():
     if args.url:
         urls = [args.url]
     elif user_script:
-        urls = list(user_script.url_parsing_dict.keys())
+        urls = list(user_script.urls.keys())
     else:
         urls = [
             "https://lite.cnn.com",
