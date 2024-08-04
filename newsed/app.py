@@ -68,7 +68,7 @@ def main():
     if args.url:
         urls = [args.url]
     elif user_script:
-        urls = list(user_script.url_parsing_dict.keys())
+        urls = list(user_script.urls.keys())
     else:
         urls = [
             "https://lite.cnn.com",
