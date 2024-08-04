@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "newsed"
-version = "0.5.1"
+version = "0.5.2"
 description = "A package to fetch and display news articles."
 authors = ["avycado13 <108358183+avycado13@users.noreply.github.com>"]
 
