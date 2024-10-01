@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "newsed"
-version = "0.5.2"
+version = "0.6.0"
 description = "A package to fetch and display news articles."
 authors = ["avycado13 <108358183+avycado13@users.noreply.github.com>"]
 
@@ -9,6 +9,7 @@ python = "^3.8"
 requests = "^2.25.1"
 beautifulsoup4 = "^4.9.3"
 blessed = "^1.17.12"
+feedparser = "^6.0.11"
 
 [tool.poetry.dev-dependencies]
 
