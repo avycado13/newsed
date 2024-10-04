@@ -61,8 +61,5 @@ jobs:
     - name: Install dependencies
       run: poetry install --no-root
 
-    - name: List dist directory contents
-      run: ls dist/
-
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
