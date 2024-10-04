@@ -3,9 +3,10 @@ name: Upload Python Package
 on:
   release:
     types: [published]
-  push:
+
 permissions:
   contents: read
+  id-token: write  # This is required for trusted publishing
 
 jobs:
   build:
@@ -13,31 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
-
-    - name: Build package
-      run: poetry build
-
-  pypi-publish:
-    needs: build  # Ensure this job runs after the build job
-    runs-on: ubuntu-latest
-    environment: release
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v3
@@ -52,7 +28,39 @@ jobs:
     - name: Install dependencies
       run: poetry install --no-root
 
+    - name: Build package
+      run: poetry build
+      working-directory: .  # Ensures the build runs in the project root
+
+    - name: List dist directory contents
+      run: ls dist/
+
+  pypi-publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: release  # Optional but recommended for setting up a deploy environment
+    permissions:
+      id-token: write  # This is necessary for OIDC-based authentication
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
+
+    - name: Install dependencies
+      run: poetry install --no-root
+
+    - name: List dist directory contents
+      run: ls dist/
+
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
