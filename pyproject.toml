@@ -1,22 +1,23 @@
-[tool.poetry]
+[project]
 name = "newsed"
-version = "0.6.0"
-description = "A package to fetch and display news articles."
-authors = ["avycado13 <108358183+avycado13@users.noreply.github.com>"]
+version = "0.7.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "avycado13", email = "108358183+avycado13@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "bs4>=0.0.2",
+    "click>=8.1.8",
+    "feedparser>=6.0.11",
+    "requests>=2.32.3",
+    "textual>=1.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-requests = "^2.25.1"
-beautifulsoup4 = "^4.9.3"
-blessed = "^1.17.12"
-feedparser = "^6.0.11"
-
-[tool.poetry.dev-dependencies]
+[project.scripts]
+newsed = "newsed:main"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-newsed = 'newsed.app:main'
-
+requires = ["hatchling"]
+build-backend = "hatchling.build"
