@@ -1,0 +1,17 @@
+#sidebar {
+    dock: left;
+    width: 30;
+    height: 100%;
+    color: #0f2b41;
+    background: dodgerblue;
+    padding: 1 2 3 4; /* Top, right, bottom, left */
+
+}
+
+#body {
+    padding: 1 2 3 4; /* Top, right, bottom, left */
+}
+
+Option {
+    padding: 1 2 3 4; /* Top, right, bottom, left */
+}

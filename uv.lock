@@ -132,6 +132,19 @@ plugins = [
 ]
 
 [[package]]
+name = "markdownify"
+version = "0.14.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "beautifulsoup4" },
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1b/75/483a4bcca436fe88d02dc7686c372631d833848951b368700bdc0c770bb7/markdownify-0.14.1.tar.gz", hash = "sha256:a62a7a216947ed0b8dafb95b99b2ef4a0edd1e18d5653c656f68f03db2bfb2f1", size = 14332 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/65/0b/74cec93a7b05edf4fc3ea1c899fe8a37f041d7b9d303c75abf7a162924e0/markdownify-0.14.1-py3-none-any.whl", hash = "sha256:4c46a6c0c12c6005ddcd49b45a5a890398b002ef51380cd319db62df5e09bc2a", size = 11530 },
+]
+
+[[package]]
 name = "mdit-py-plugins"
 version = "0.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -154,12 +167,13 @@ wheels = [
 
 [[package]]
 name = "newsed"
-version = "0.1.0"
+version = "0.7.0"
 source = { editable = "." }
 dependencies = [
     { name = "bs4" },
     { name = "click" },
     { name = "feedparser" },
+    { name = "markdownify" },
     { name = "requests" },
     { name = "textual" },
 ]
@@ -169,6 +183,7 @@ requires-dist = [
     { name = "bs4", specifier = ">=0.0.2" },
     { name = "click", specifier = ">=8.1.8" },
     { name = "feedparser", specifier = ">=6.0.11" },
+    { name = "markdownify", specifier = ">=0.14.1" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "textual", specifier = ">=1.0.0" },
 ]
@@ -224,6 +239,15 @@ name = "sgmllib3k"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9e/bd/3704a8c3e0942d711c1299ebf7b9091930adae6675d7c8f476a7ce48653c/sgmllib3k-1.0.0.tar.gz", hash = "sha256:7868fb1c8bfa764c1ac563d3cf369c381d1325d36124933a726f29fcdaa812e9", size = 5750 }
+
+[[package]]
+name = "six"
+version = "1.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81", size = 34031 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274", size = 11050 },
+]
 
 [[package]]
 name = "soupsieve"

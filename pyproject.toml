@@ -11,12 +11,14 @@ dependencies = [
     "bs4>=0.0.2",
     "click>=8.1.8",
     "feedparser>=6.0.11",
+    "markdownify>=0.14.1",
     "requests>=2.32.3",
     "textual>=1.0.0",
 ]
 
 [project.scripts]
 newsed = "newsed:main"
+tui = "newsed:tui"
 
 [build-system]
 requires = ["hatchling"]

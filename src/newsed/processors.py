@@ -5,6 +5,7 @@ def npr_processor(soup):
         for a_link in section.find_all("a")
     )
 
+
 def generic_processor(soup):
     return (
         a_link
