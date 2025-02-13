@@ -1,31 +1,35 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header
-from textual import on
-from textual.containers import HorizontalGroup, VerticalScroll
-from textual.widgets import Button, Digits, Footer, Header, Static, Markdown, OptionList
+from textual.widgets import Markdown, OptionList
 from textual.widgets.option_list import Option, Separator
+import click
 from markdownify import markdownify as md
 import requests
 
 
-
-
 class TUI(App[None]):
     def __init__(
-        self, url: str = "https://text.npr.org/nx-s1-5290263", urls: list[tuple[str,str]] = [("NPR", "https://text.npr.org/nx-s1-5292342"), ("BBC", "https://text.npr.org/nx-s1-5290263")]
+        self,
+        url: str = "https://example.com",
+        urls: list[tuple[str, str]] = [("Example 1", "example.com")],
     ) -> None:
         self.url = url
         self.urls = urls
-        self.url_marked_as_read:bool = False
-        self.BINDINGS = self._set_bindings()  # Call it as an instance method
+        self.url_marked_as_read: bool = False
         super().__init__()
 
     def fetch_news(self, url) -> str:
-        response = requests.get(url)
-        return response.text
-    
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.text
+        except requests.RequestException as e:
+            self.log(f"Error fetching news from {url}: {e}")
+            return "Error fetching news. Please try again later."
+
     """A Textual app to read the news."""
     CSS_PATH = "main.tcss"
+
     def _set_bindings(self):
         status = "unread" if self.url_marked_as_read else "read"
         BINDINGS = [
@@ -35,9 +39,9 @@ class TUI(App[None]):
         return BINDINGS
 
     BINDINGS = [
-            ("d", "toggle_dark", "Toggle dark mode"),
-            ("r", "mark_as_read", "Mark as read"),
-        ]
+        ("d", "toggle_dark", "Toggle dark mode"),
+        ("r", "mark_as_read", "Mark as read"),
+    ]
 
     def compose(self) -> ComposeResult:
         """Create child widgets for the app."""
@@ -45,12 +49,12 @@ class TUI(App[None]):
         yield Header(show_clock=True)
         yield (
             OptionList(
-            Separator(),
-            Option("Back", self.urls[1][1] if len(self.urls) > 1 else ""),
-            Option("Next", self.urls[1][1] if len(self.urls) > 1 else ""),
-            Separator(),
-            *(Option(url[0], url[1]) for url in self.urls),
-            id="sidebar",
+                Separator(),
+                Option("Back", self.urls[1][1] if len(self.urls) > 1 else ""),
+                Option("Next", self.urls[1][1] if len(self.urls) > 1 else ""),
+                Separator(),
+                *(Option(url[0], url[1]) for url in self.urls),
+                id="sidebar",
             )
         )
         yield Markdown(self.rendered_content, id="body")
@@ -77,6 +81,15 @@ class TUI(App[None]):
         self.query_one("#body", Markdown).update(self.rendered_content)
 
 
-def main() -> None:
-    app = TUI()
-    app.run()
+@click.group(invoke_without_command=True)
+@click.option(
+    "--source", type=str, help="Specify the url of the article.", multiple=True, nargs=4
+)
+@click.pass_context
+def main(ctx: click.Context, source: tuple[str]) -> None:
+    try:
+        urls = [(f"Source {i + 1}", url) for i, url in enumerate(source)]
+        app = TUI(urls=urls)
+        app.run()
+    except Exception as e:
+        click.echo(f"An error occurred: {e}")

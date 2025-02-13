@@ -15,51 +15,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          version: "latest"
+          cache-dependency-glob: "uv.lock"
 
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
-
-    - name: Install dependencies
-      run: poetry install --no-root
-
-    - name: Build package
-      run: poetry build
-      working-directory: .  # Ensures the build runs in the project root
-
-    - name: List dist directory contents
-      run: ls dist/
+      - name: Install requirements
+        run: uv build
+      - name: List dist directory contents
+        run: ls dist/
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: dist/
 
   pypi-publish:
-    needs: build
+    name: upload release to PyPI
     runs-on: ubuntu-latest
-    environment: release  # Optional but recommended for setting up a deploy environment
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: pypi
     permissions:
-      id-token: write  # This is necessary for OIDC-based authentication
-      contents: read
-
+      # IMPORTANT: this permission is mandatory for Trusted Publishing
+      id-token: write
     steps:
-    - uses: actions/checkout@v4
+      # retrieve your distributions here
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-
-    - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
-
-    - name: Install dependencies
-      run: poetry install --no-root
-
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
