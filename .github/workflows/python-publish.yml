@@ -23,8 +23,9 @@ jobs:
           enable-cache: true
           version: "latest"
           cache-dependency-glob: "uv.lock"
-
-      - name: Install requirements
+      - name: Install deps
+        run: uv sync
+      - name: Build
         run: uv build
       - name: List dist directory contents
         run: ls dist/
