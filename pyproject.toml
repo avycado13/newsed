@@ -2,7 +2,7 @@
 name = "newsed"
 version = "0.7.0"
 description = "Add your description here"
-readme = "README.md"
+readme = "README.MD"
 authors = [
     { name = "avycado13", email = "108358183+avycado13@users.noreply.github.com" }
 ]
